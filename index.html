@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ago19</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body style="background-image: linear-gradient(to bottom right, #4299e1, #2d3748); display: flex; flex-direction: column; height: 100vw; font-family: 'JetBrains Mono';">
+    <header class="bg-gray-800 text-white p-4">
+        <h1 class="text-3xl text-center">Welcome to Ago19's Website</h1>
+    </header>
+    <nav class="bg-gray-200 p-4">
+        <ul class="flex space-x-4">
+            <li><a href="#projects" class="text-blue-500 hover:underline">Projects</a></li>
+            <li><a href="#aboutme" class="text-blue-500 hover:underline">About_me</a></li>
+            <li><a href="#contact" class="text-blue-500 hover:underline">Contact</a></li>
+        </ul>
+    </nav>
+    <main class="p-4">
+
+        <section id="projects" class="mb-8 section_container">
+        <h2 class="text-2xl mb-2 text-center text-white">Projects</h2>
+        <div class="projects_list">
+            
+            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/TaroccDropWeb'">
+                <img class="project_image" src="https://github.com/Ago19pc/TaroccDropWeb/blob/master/website/TaroccDrop.png?raw=true" alt="TaroccDrop img" class="float-left mr-4">
+                <p>TaroccDrop
+            </div>
+
+            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/keccak'">
+                <img class="project_image" src="https://github.com/Ago19pc/keccak/blob/main/secure_hash_algorithm_sha_3_competition_algorithm.jpg?raw=true" alt="Keccak img" class="float-left mr-4">
+                <p>Keccak 
+            </div>
+
+            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/keccak'">
+                <img class="project_image" src="https://github.com/Ago19pc/IS24-AM04/blob/main/src/main/resources/images/otherImages/logo.jpg?raw=true" alt="Codex Naturalis img" class="float-left mr-4">
+                <p>Codex Naturalis
+            </div>
+            
+            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/IS24-AM04'">
+                <img class="project_image" src="https://github.com/Ago19pc/Chess/blob/master/download.png?raw=true" alt="Chess img" class="float-left mr-4">
+                <p>Chess
+            </div>
+
+            <div class="project_holder" onclick="location.href = 'https://www.spigotmc.org/members/xxrogxx.219114/'">
+                <img class="project_image" src="https://static.spigotmc.org/img/spigot.png" alt="Chess img" class="float-left mr-4">
+                <p>Minecraft Plugin (Skript)
+            </div>
+            
+
+
+        </div>
+    </section>
+
+    <section id="aboutme" class="mb-8 section_container">
+        <h2 class="text-2xl mb-2 text-center text-white">About me</h2>
+        <p>Hi,</p>
+        <p>I'm a computer science engineer graduated from PoliMi. These are some random project I've been working on.</p>
+
+    </section>
+    
+    <section id="contact" class="mb-8 section_container">
+        <h2 class="text-2xl mb-2 text-center text-white">Contact</h2>
+        <p>This is the contact section.</p>
+    </section>
+
+    <section id="cv" class="mb-8 section_container text-center" style="">
+        <a href="./CV Contemi Agostino.pdf" download="CV Contemi Agostino"> 
+            <h2>Curriculum Vitae</h2>
+            <i class="material-icons">file_download</i>
+        </a>
+    </section>
+    
+    </main>
+    <footer class="bg-gray-800 text-white p-4 text-center footer">
+        <p>&copy; 2024 Ago19's Website</p>
+    </footer>
+</body>
+</html>

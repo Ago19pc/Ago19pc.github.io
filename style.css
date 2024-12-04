@@ -1,0 +1,35 @@
+
+
+
+
+.project_holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: solid 1px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.project_image {
+    height: 20vw;;
+}
+
+.projects_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1vw;
+    padding: 1vh;
+}
+
+.footer {
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+.section_container {
+    border-radius: 10px;
+    background-color: #2a4365;
+}
