@@ -9,10 +9,13 @@
     border-bottom: solid 1px black;
     border-radius: 10px;
     cursor: pointer;
+    
 }
 
 .project_image {
-    height: 20vw;;
+    height: 20vw;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .projects_list {
@@ -32,4 +35,7 @@
 .section_container {
     border-radius: 10px;
     background-color: #2a4365;
+    width: 80%;
+    margin-left: 10%;
+    padding: 2%;
 }
