@@ -6,9 +6,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-bottom: solid 1px black;
+    border-bottom: solid 1px white;
     border-radius: 10px;
     cursor: pointer;
+    color: white;
     
 }
 
@@ -34,8 +35,37 @@
 
 .section_container {
     border-radius: 10px;
-    background-color: #2a4365;
     width: 80%;
     margin-left: 10%;
     padding: 2%;
+    color: white;
 }
+
+.bg_color {
+    background-color: #110944;
+}
+
+.links {
+    display: flex; 
+    flex-direction: row;
+    gap: 5px;
+}
+
+a:hover i {
+    transform: scale(2);
+    color: #ffcc00;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.coding_language:hover {
+    transform: scale(2);
+    transition: transform 0.3s ease;
+}
+
+.coding_language {
+    min-width: 50px;
+    min-height: 50px;
+}
+
+
+

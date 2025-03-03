@@ -9,15 +9,14 @@
     <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body style="background-image: linear-gradient(to bottom right, #4299e1, #2d3748); display: flex; flex-direction: column; height: 100vw; font-family: 'JetBrains Mono';">
-    <header class="bg-gray-800 text-white p-4">
+<body style="background-image: url('./top_bg.jpg'); display: flex; flex-direction: column; height: 100vw; font-family: 'JetBrains Mono'; background-repeat: repeat-x;" class="bg_color">
+    <header class="text-white p-4 bg-gray-800">
         <h1 class="text-3xl text-center">Welcome to Ago's Website</h1>
     </header>
     <nav class="bg-gray-200 p-4">
         <ul class="flex space-x-4">
             <li><a href="#projects" class="text-blue-500 hover:underline">Projects</a></li>
-            <li><a href="#aboutme" class="text-blue-500 hover:underline">About_me</a></li>
-            <li><a href="#contact" class="text-blue-500 hover:underline">Contact</a></li>
+            <li><a href="#coding" class="text-blue-500 hover:underline">Coding</a></li>
             <li><a href="#cv" class="text-blue-500 hover:underline">CV</a></li>
         </ul>
     </nav>
@@ -37,12 +36,12 @@
                 <p>Keccak 
             </div>
 
-            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/keccak'">
+            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/IS24-AM04'">
                 <img class="project_image" src="https://github.com/Ago19pc/IS24-AM04/blob/main/src/main/resources/images/otherImages/logo.jpg?raw=true" alt="Codex Naturalis img" class="float-left mr-4">
                 <p>Codex Naturalis
             </div>
             
-            <div class="project_holder" onclick="location.href = 'https://github.com/Ago19pc/IS24-AM04'">
+            <div class="project_holder" onclick="location.href = 'https://github.com/fillododi/chess'">
                 <img class="project_image" src="https://github.com/Ago19pc/Chess/blob/master/download.png?raw=true" alt="Chess img" class="float-left mr-4">
                 <p>Chess
             </div>
@@ -57,28 +56,81 @@
         </div>
     </section>
 
-    <section id="aboutme" class="mb-8 section_container">
-        <h2 class="text-2xl mb-2 text-center text-white">About me</h2>
-        <p>Hi,</p>
-        <p>I'm a computer science engineer graduated from PoliMi. These are some random project I've been working on.</p>
+    <section id="coding" class="mb-8 section_container">
+        <h2 class="text-2xl mb-2 text-center text-white">Coding 💻</h2>
+        <div class="mb-5"></div>
+        <div style="display: flex; justify-content: space-around; width: 100%;">
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/c.svg" alt="C logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/csh.svg" alt="C# logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/c++.svg" alt="C++ logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/javascript.svg" alt="JavaScript logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/typescript.svg" alt="TypeScript logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/python.svg" alt="Python logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/html.svg" alt="HTML logo" style="width: 50px; height: 50px;">
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/java.svg" alt="Java logo" style="width: 50px; height: 50px;"> 
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/react.svg" alt="React logo" style="width: 50px; height: 50px;"> 
+            </div>
+
+            <div class="coding_language">
+                <img class="coding_image" src="assets/nodejs.svg" alt="Node logo" style="width: 50px; height: 50px;"> 
+            </div>
+
+        </div>
 
     </section>
     
-    <section id="contact" class="mb-8 section_container">
-        <h2 class="text-2xl mb-2 text-center text-white">Contact</h2>
-        <p>This is the contact section.</p>
-    </section>
+    
 
     <section id="cv" class="mb-8 section_container text-center">
         <h2 class="text-2xl mb-2 text-center text-white">Get my CV</h2>
-        <a href="./CV Contemi Agostino.pdf" download="CV Contemi Agostino.pdf"> 
+        <a href="./CV Agostino Contemi.pdf" download="CV Contemi Agostino.pdf"> 
             <i class="material-icons">file_download</i>
         </a>
     </section>
     
+    
     </main>
-    <footer class="bg-gray-800 text-white p-4 text-center footer">
-        <p>&copy; 2024 Ago19's Website</p>
-    </footer>
+    <div class="bg-gray-800 text-white p-4" style="height: 100%;">
+        
+        <div style="display: flex; flex-direction: row; justify-content: space-around;">
+            
+            <a href="https://www.linkedin.com/in/agostino-contemi-b0b211293/" target="_blank" class="links">
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" style="width:24px; height:24px;">
+                <p>LinkedIn</p>
+            </a>
+            <a href="https://github.com/Ago19pc" target="_blank" class="links">
+                <img src="assets/github.svg" alt="GitHub" style="width:24px; height:24px;">
+                <p>GitHub</p>
+            </a>
+        </div>
+        <p class="text-center">&copy; 2025 Ago19's Website</p>
+    </div>
 </body>
 </html>
+
