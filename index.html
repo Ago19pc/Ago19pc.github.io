@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="style.css">
     <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <script src="script.js"></script>
+
 </head>
 <body style="background-image: url('./top_bg.jpg'); display: flex; flex-direction: column; height: 100vw; font-family: 'JetBrains Mono'; background-repeat: repeat-x;" class="bg_color">
     <header class="text-white p-4 bg-gray-800">
@@ -21,6 +24,12 @@
         </ul>
     </nav>
     <main class="p-4">
+
+        <div style="position: fixed; width: 150px; height: 150px; z-index: 1000; top: 15%; left: 90%;">
+            <img id="JINO" src="assets/pet.png">
+        </div>
+
+
 
         <section id="projects" class="mb-8 section_container">
         <h2 class="text-2xl mb-2 text-center text-white">Projects</h2>
@@ -80,6 +89,7 @@
             <div class="coding_language">
                 <img class="coding_image" src="assets/typescript.svg" alt="TypeScript logo" style="width: 50px; height: 50px;">
             </div>
+
 
             <div class="coding_language">
                 <img class="coding_image" src="assets/python.svg" alt="Python logo" style="width: 50px; height: 50px;">
