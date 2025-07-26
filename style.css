@@ -10,8 +10,21 @@
     border-radius: 10px;
     cursor: pointer;
     color: white;
+
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out;
+    transform: 
+        rotateY(var(--rotateY))
+        rotateX(var(--rotateX));
+    perspective: 1000px;
     
 }
+
+.project_holder:hover{
+  transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) scale(1.1);
+  transition: transform 0.2s ease;
+}
+
 
 .project_image {
     height: 20vw;
@@ -23,8 +36,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1vw;
-    padding: 1vh;
+    gap: 2vw;
+    padding: 2vh;
 }
 
 .footer {
