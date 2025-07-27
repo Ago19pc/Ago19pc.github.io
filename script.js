@@ -1,14 +1,66 @@
+const contents = document.querySelectorAll('.content');
 
+const footer_height = (document.getElementById("footer").getBoundingClientRect().height / document.documentElement.clientHeight) * 100
+
+document.body.style.setProperty("--body-height", `${contents.length * 100 + footer_height}vh`);
 
 
 window.addEventListener('scroll', () => {
-  const rotatingElement = document.getElementById('JINO');
-  const scrollPosition = window.scrollY; // The vertical scroll position
-  
-  const rotationDegree = (scrollPosition % window.innerHeight) % 360; // This will rotate it with the scroll position
-  const newHeight = scrollPosition * 0.5 + 'px'; // This will move the element up as we scroll down
-  rotatingElement.style.transform = `translate(0%, ${newHeight}) rotate(${rotationDegree}deg)`;
+  const scrollTop = window.scrollY;
+  const windowHeight = window.innerHeight;
+
+  contents.forEach((content, index) => {
+    const start = index * windowHeight;
+    const end = (index + 1) * windowHeight;
+    const nextStart = (index - 1) * windowHeight;
+
+    const tIn = (scrollTop - nextStart) / windowHeight; // how far into this section
+    const tOut = (scrollTop - start) / windowHeight; // how far fading out
+
+    if (scrollTop >= nextStart && scrollTop < start) {
+      // incoming section (fade in)
+      const t = Math.min(Math.max(tIn, 0), 1);
+      content.style.opacity = t;
+      content.style.visibility = 'visible';
+      content.style.pointerEvents = 'auto';
+      applyTransform(content, t, content.dataset.animation);
+    } else if (scrollTop >= start && scrollTop < end) {
+      // outgoing section (fade out)
+      const t = Math.min(Math.max(tOut, 0), 1);
+      content.style.opacity = 1 - t;
+      content.style.visibility = 'visible';
+      content.style.pointerEvents = 'auto';
+      applyTransform(content, t, content.dataset.animation);
+    } else {
+      // hide
+      content.style.opacity = 0;
+      content.style.visibility = 'hidden';
+      content.style.pointerEvents = 'none';
+      content.style.transform = 'none';
+    }
+  });
 });
+
+function applyTransform(content, t, animation) {
+  switch (animation) {
+    case 'fade':
+      content.style.transform = `scale(${1 + t * 0.05})`;
+      break;
+    case 'rotate':
+      content.style.transform = `rotate(${t * 20}deg)`;
+      break;
+    case 'slide':
+      content.style.transform = `translateX(${-t * 100}%)`;
+      break;
+    case 'zoom':
+      content.style.transform = `scale(${1 + t * 0.3})`;
+      break;
+    default:
+      content.style.transform = 'none';
+  }
+}
+
+
 
 projects = document.getElementsByClassName("project_holder")
 
