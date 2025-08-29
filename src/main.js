@@ -5,16 +5,29 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 
+
+
+
+// Fetch the canvas
+var canvReference = document.getElementById("three_canvas");
+
 // Renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+var renderer = new THREE.WebGLRenderer({
+    antialias:true,
+    canvas: canvReference
+});
+
+let canvas_size = [window.innerWidth * 0.95, window.innerHeight * 0.95]
+function get_canvas_width() {return canvas_size[0]}
+function get_canvas_height() {return canvas_size[1]}
+
+renderer.setSize(get_canvas_width(), get_canvas_height());
 
 // Scene & Camera
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0e0e10);
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(60, get_canvas_width()/get_canvas_height(), 0.1, 100);
 camera.position.set(5,5,5);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -68,14 +81,27 @@ document.body.appendChild(tooltip);
 
 // Load GLTF
 const loader = new GLTFLoader();
-loader.load('/models/room.glb', (gltf)=>{
-    clickable_names.forEach(name=>{
-        const obj = gltf.scene.getObjectByName(name);
-        if(obj) clickable.push(obj);
-        else console.warn(`Object "${name}" not found`);
+const loadingScreen = document.getElementById('loading-screen');
+loader.load(
+  '/models/room.glb',
+  (gltf) => {
+    clickable_names.forEach(name => {
+      const obj = gltf.scene.getObjectByName(name);
+      if(obj) clickable.push(obj);
+      else console.warn(`Object "${name}" not found`);
     });
     scene.add(gltf.scene);
-}, undefined, err=>console.error(err));
+
+    // Hide loading screen
+    loadingScreen.style.display = 'none';
+  },
+  (xhr) => {
+    // Optional: progress
+    const percentComplete = (xhr.loaded / xhr.total) * 100;
+    loadingScreen.innerText = `Loading... ${Math.round(percentComplete)}%`;
+  },
+  (error) => console.error(error)
+);
 
 // Raycaster
 const raycaster = new THREE.Raycaster();
@@ -84,7 +110,7 @@ let hovered = null;
 
 // Postprocessing: Outline
 const renderPass = new RenderPass(scene,camera);
-const outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth,window.innerHeight), scene,camera);
+const outlinePass = new OutlinePass(new THREE.Vector2(get_canvas_width(),get_canvas_height()), scene,camera);
 outlinePass.edgeStrength = 8;
 outlinePass.edgeGlow = 1;
 outlinePass.edgeThickness = 2;
@@ -98,10 +124,10 @@ composer.addPass(outlinePass);
 
 // Resize
 window.addEventListener('resize',()=>{
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect = get_canvas_width()/get_canvas_height();
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    composer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(get_canvas_width(), get_canvas_height());
+    composer.setSize(get_canvas_width(), get_canvas_height());
 });
 
 // Helper: get root clickable object
@@ -126,27 +152,27 @@ function toScreenPosition(obj,camera){
     return {x,y};
 }
 
-// Mouse move: hover + tooltip
-window.addEventListener('mousemove', (event)=>{
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse,camera);
+window.addEventListener('mousemove', (event) => {
+    const rect = renderer.domElement.getBoundingClientRect(); // get canvas position
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    const intersects = raycaster.intersectObjects(clickable,true);
-    if(intersects.length>0){
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(clickable, true);
+    if (intersects.length > 0) {
         const rootObj = getRootClickable(intersects[0].object);
         hovered = rootObj;
         outlinePass.selectedObjects = hovered ? [hovered] : [];
-        document.body.style.cursor = hovered ? "pointer":"default";
+        document.body.style.cursor = hovered ? "pointer" : "default";
 
-        if(hovered && descriptions.has(hovered.name)){
+        if (hovered && descriptions.has(hovered.name)) {
             tooltip.style.display = 'block';
             tooltip.innerText = descriptions.get(hovered.name);
-            const pos = toScreenPosition(hovered,camera);
-            tooltip.style.left = pos.x - tooltip.offsetWidth/2 + 'px';
+            const pos = toScreenPosition(hovered, camera);
+            tooltip.style.left = pos.x - tooltip.offsetWidth / 2 + 'px';
             tooltip.style.top = pos.y - tooltip.offsetHeight - 10 + 'px';
         } else tooltip.style.display = 'none';
-
     } else {
         hovered = null;
         outlinePass.selectedObjects = [];
@@ -155,15 +181,18 @@ window.addEventListener('mousemove', (event)=>{
     }
 });
 
-// Click: open link
-window.addEventListener('click', (event)=>{
-    raycaster.setFromCamera(mouse,camera);
-    const intersects = raycaster.intersectObjects(clickable,true);
-    if(intersects.length>0){
+window.addEventListener('click', (event) => {
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(clickable, true);
+    if (intersects.length > 0) {
         const rootObj = getRootClickable(intersects[0].object);
-        if(rootObj){
+        if (rootObj) {
             const url = links.get(rootObj.name);
-            if(url) window.open(url,"_blank");
+            if (url) window.open(url, "_blank");
         }
     }
 });
