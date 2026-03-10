@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA e Machine Learning nella Diagnosi dell'Idrocefalo Normoteso Idiopatico</title>
+
+    <style>
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                        url('https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        header h1 { font-size: 3rem; margin-bottom: 1rem; }
+        header p { font-size: 1.2rem; max-width: 800px; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        /* Area Introduzione / Hero Section */
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        /* Area Introduzione al Problema */
+        .problem-intro {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        /* Area Articoli */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        .article-card {
+            background: white;
+            padding: 25px;
+            border-left: 6px solid var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            grid-template-columns: 1fr 1fr;
+            display: grid;
+        }
+        .article-card h2 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-top: 0;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+        .article-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+        .article-card ul {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+
+        .article-card:hover {
+            transition: all 0.3s ease;
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .article-card:active {
+            transform: scale(1);
+        }
+
+        /* Area Finale / Conclusione */
+        .conclusion {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            height: 30vh
+        }
+        .image-placeholder {
+            font-style: italic;
+            color: #7f8c8d;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .tech-block {
+            margin-bottom: 1.5rem;
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 90%;
+        }
+
+        .tech-block h4 {
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+    /* Styled tags for algorithms and tools */
+        .tag {
+            display: inline-block;
+            background: var(--code-bg);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+
+        .results-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            width: 90%;
+        }
+
+        .results-box h4 { border-color: #34d399; color: #065f46; margin-bottom: 1rem;}
+
+        ul { padding-left: 1.5rem; margin-top: 0.5rem; font-size: 0.95rem; }
+        li { margin-bottom: 0.5rem; }
+
+        .image-caption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .carousel {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .carousel-viewport {
+            overflow: hidden;
+            width: 100%;
+        }
+
+
+        .carousel-track {
+            display: flex;
+            gap: 16px;
+            scroll-behavior: smooth;
+            padding: 8px 0;
+            overflow-x: auto;
+        }
+
+
+        .carousel-card {
+            flex: 0 0 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .carousel-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        .carousel-card .card-body {
+            padding: 12px 14px;
+            color: var(--text-color);
+        }
+        .carousel-card h4 { margin: 0 0 6px 0; color: var(--primary-color); font-size: 1.05rem; }
+        .carousel-card p { margin: 0; font-size: 0.95rem; color: #444; }
+        .carousel-btn {
+            background: var(--secondary-color);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        .carousel-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        /* Responsive */
+        @media (max-width: 880px) {
+            .carousel-card { flex: 0 0 260px; }
+        }
+        @media (max-width: 560px) {
+            .carousel-card { flex: 0 0 220px; }
+            .carousel-card img { height: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+                <h1>IA & iNPH</h1>
+        <p>Applicazioni nella Diagnosi dell'Idrocefalo Normoteso Idiopatico (iNPH) </p>
+    </header>
+    
+    <section>
+        <h2 style="text-align:center;">Descrizione della Patologia</h2>
+        <!--- Carosello di card contenenti immagini e testo -->
+        <div class="carousel-section container" aria-label="Carosello di studi">
+
+            <div class="carousel">
+                
+
+                <div class="carousel-viewport" role="region" aria-roledescription="carousel">
+                    <div class="carousel-track" id="carousel-track">
+                        <article class="carousel-card">
+                            <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2213158225000865-gr1.jpg" alt="Risonanza magnetica inph">
+                            <div class="card-body">
+                                <h4>Cos'è la iNPH? 🧠💧</h4>
+                                <p>L'Idrocefalo Normoteso Idiopatico (iNPH) è un disturbo neurologico causato da un eccessivo accumulo di liquido cerebrospinale all'interno dei ventricoli del cervello.
+Colpisce principalmente le persone over 60 e viene spesso ignorato. Ma c'è una buona notizia: a differenza di altre patologie, <strong>può essere reversibile!</strong></p>
+                            </div>
+                        </article>
+
+                        <article class="carousel-card">
+                            <img src="https://www.idrocefalonormoteso.it/wp-content/uploads/2025/05/idrocefalo-normoteso-triade-di-hakim.webp" alt="triade hakim">
+                            <div class="card-body">
+                                <h4>I 3 Campanelli d'Allarme ⚠️</h4>
+                                <p>La "Triade di Hakim":
+                                <ul>
+                                    <li>    🚶‍♂️ Disturbi del cammino: Difficoltà a camminare, passi brevi e strascicati, sensazione di avere i piedi "incollati" al pavimento. </li> 
+                                    <li>    💭 Declino cognitivo: Problemi di memoria, lentezza nel ragionamento e apatia.</li> 
+                                    <li> 🚽 Incontinenza urinaria: Bisogno improvviso, frequente e non controllabile di urinare.</li>
+                                </ul>
+                            </div>
+                        </article>
+
+                        <article class="carousel-card">
+                            <img src="https://messaggerosantantonio.it/sites/default/files/styles/preview_gallery_fotografica_grande_post/public/media-gallery/images/vocazione_francescana_8_febbraio_2026.jpg?itok=8dglOTOf" alt="mixup">
+                            <div class="card-body">
+                                <h4>Il "Falso" Alzheimer 🎭</h4>
+                                <p>Poiché i sintomi (memoria, difficoltà motorie) sono molto simili, la iNPH viene troppo spesso confusa e scambiata per il Morbo di Alzheimer o per il Parkinson.</p>
+                            </div>
+                        </article>
+
+                        <article class="carousel-card">
+                            <img src="https://www.valorinormali.com/wp-content/uploads/2023/02/shunt-idrocefalo.jpg" alt="shunt">
+                            <div class="card-body">
+                                <h4>Come si scopre e come si cura? 🔬🩺</h4>
+                                <p>Si effettua tramite Risonanza Magnetica (RM) o TAC al cervello, seguita spesso da un "Tap Test" (sottrazione di liquido per vedere se i sintomi migliorano temporaneamente).
+                                La terapia d'elezione è chirurgica. Consiste nell'inserimento di uno shunt (un piccolo tubicino con una valvola) che drena il liquido in eccesso dal cervello verso l'addome, alleviando la pressione.
+                                </p>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-controls" style="flex-direction:row;align-items:center;display:flex;justify-content:center;margin-top:10px;">
+                    <button class="carousel-btn" id="carousel-prev" aria-label="Scorri indietro">&larr;</button>
+                    <button class="carousel-btn" id="carousel-next" aria-label="Scorri avanti">&rarr;</button>
+            </div>
+
+            
+        </div>
+
+    </section>
+
+    <div class="container">
+        <section class="problem-intro">
+            <h2>Introduzione al Problema</h2>
+            <p>L'Idrocefalo Normoteso Idiopatico (iNPH) presenta sfide cliniche complesse, in particolare per quanto riguarda la previsione della risposta ai trattamenti chirurgici (come l'intervento di derivazione o shunt) e la formulazione di diagnosi precoci accurate. L'integrazione dell'Intelligenza Artificiale (IA) e del Machine Learning (ML) offre strumenti promettenti per analizzare grandi moli di dati medici, dalle neuroimmagini ai biomarcatori, supportando i medici in decisioni diagnostiche e prognostiche sempre più precise e personalizzate.</p>
+        </section>
+
+
+        <section class="articles-area">
+            <div class="articles-grid">
+
+                <h2>1. Artificial Intelligence for Prediction of Shunt Response in Idiopathic Normal Pressure Hydrocephalus: A Systematic Review</h2>
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Valutare l'efficacia dell'intelligenza artificiale nel prevedere la risposta all'intervento di derivazione (shunt response) nei pazienti con iNPH.</p>
+                        <h3>Metodologie</h3>
+                        <p>Revisione sistematica della letteratura secondo le linee guida PRISMA.</p>
+                        <p>Inclusione di studi con modelli IA/ML, omettendo una meta-analisi a causa dell'eterogeneità dei dati.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Estrazione sistematica dei dati di addestramento, comprendenti dati demografici, imaging/radiomica (62.5% degli studi), test clinici e biomarcatori del CSF.</p>
+                        <h3>Modelli AI</h3>
+                        <p>La Support Vector Machine (SVM) è stata utilizzata nell'87.5% degli studi.</p>
+                        <p>Modello versatile, robusto contro l'overfitting e adatto per dati ad alta dimensionalità tipici dell'imaging con campioni ridotti.</p>
+                    </div>
+
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Performance AUC comprese tra 0.80 e 0.94 (predittività da moderata a estremamente elevata).</p>
+                        <p>L'IA è promettente per il supporto decisionale, sebbene necessiti di standardizzazione e validazione dei modelli.</p>
+                    </div>
+
+                </article>
+
+                                
+                <h2>2. CSF tap test in idiopathic normal pressure hydrocephalus: still a necessary prognostic test?</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Indagare se parametri neuropsicologici, dell'andatura o di Risonanza Magnetica multimodale possano prevedere l'inversione sintomatica a breve termine dopo il tap test.</p>
+                        <h3>Distribuzioni</h3>
+                        <p>Coorte prospettica: 30 pazienti iNPH e 46 controlli sani, sottoposti a valutazione clinico-motoria e protocollo MRI esteso.</p>
+                        <p>Dei iNPH 16 responder (53%) e 14 non-responder.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti con diagnosi possibile o proababile di iNPH in grado di camminare senza assistenza e senza controindicazione per la risonanza magnetica</p>
+                    </div>
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Pre-elaborazione delle immagini con denoising e correzione movimenti.</p>
+                        <p>Feature selection basata su Scala Fazekas ed estrazione volumetrica, con imputazione k-nearest-neighbor per i dati mancanti e validazione leave-one-out.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Sviluppo di un classificatore multivariato SVM Lineare che separa responder da non-responder assegnando pesi a feature cliniche e di imaging.</p>
+                        <h3>Outcome</h3>
+                        <p>Inversione dei sintomi 24 ore dopo il TAP test. Ottenuta tramite "Time Up and Go" (TUG) test. Un miglioramento di almeno il 10% è classificato come risposta positiva.</p>
+                    </div>
+
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Il modello ha ottenuto un'accuratezza del 70%, sensibilità 75%, specificità 64% e AUC 0.83.</p>
+                        <p>I modelli multivariati forniscono informazioni preziose, pur non potendo ancora sostituire del tutto il tap test clinico.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        
+                        <h3>Input Features</h3>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr;">
+                            <div>
+                                <h4>Clinica</h4>
+                                <ul>
+                                    <li>Durata malattia</li>
+                                    <li>Velocità Cammino</li>
+                                    <li>Lunghezza e Larghezza Passo</li>
+                                    <li>TUG</li>
+                                    <li>Fluenza Verbale</li>
+                                    <li>Memoria (FCRST Test)</li>
+                                    <li>WAIS-III</li>
+                                    <li>Apatia Starkstein</li>
+                                    <li>Età</li>
+                                    <li>Istruzione</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Imaging</h4>
+                                <ul>
+                                    <li>Volumi ventricolari e di specificeh fessure</li>
+                                    <li>Indici di dispersione ODI</li>
+                                    <li>Frazione di volume intra-assonale  VIC in specifiche aree</li>
+                                    <li>Connettività funzionale DMN</li>
+                                    <li>Perfusione sanguigna</li>
+                                    <li>Lesioni materia binaca tramite Fazekas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </article>
+
+                <h2>3. Cerebrospinal fluid transcripts may predict shunt surgery responses in normal pressure hydrocephalus</h2>
+                
+                <article class="article-card">
+                
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Identificare espressioni geniche nelle vescicole del CSF correlate al miglioramento post-operatorio e sviluppare un modello predittivo ML.</p>
+                        <h3>Metodologie</h3>
+                        <p>Analisi del CSF intraventricolare di 42 pazienti NPH sottoposti a shunt, con rivalutazione clinica a 3 mesi.</p>
+                        <h3>Distribuzioni</h3>
+                        <p>38 su 42 si sono presentati al follow-up dopo 3 mesi</p>
+                        <p>Andatura: 22/38 sono migliorati, 16/38 no</p>
+                        <p>Sintomi urinari: 31 presentavano problemi, 19 migliorati 12 no</p>
+                        <p>Aspetto cognitivo: 32 pazienti, 20 migliorati 12 no</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Isolamento vescicole e sequenziamento RNA; regolarizzazione delle espressioni geniche con variance stabilizing transformation e conversione in z-score.</p>
+                        <p>Selezione feature tramite regressione logistica e validazione leave-one-out.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Addestramento di una SVM (C=1) per trovare le espressioni molecolari utili a differenziare i pazienti che traggono beneficio dallo shunt da quelli che non lo traggono.</p>
+                        <h3>Outcome</h3>
+                        <p>Miglioramento sintomi a 3 mesi dallo shunt. Velocità e uso di supporti. Riduzione frequenza (incontinenza urinaria) e decadimento cognitivo.</p>
+                        <p>I miglioramenti cognitivi sono misurati in modo qualitativo. Per esempio il paziente o un familiare riporta cambiamenti rilevanti.</p>
+                    </div>
+                    
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Prestazioni: 30 geni per andatura (AUC 0.80), 140 per disturbi urinari (AUC 0.79), 50 per miglioramento cognitivo (AUC 0.81).</p>
+                        <p>Il trascrittoma del CSF contiene firme biologiche affidabili analizzabili via ML per prevedere i benefici chirurgici.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Dati di espressione genica (trascrittoma) estratti dal CSF. I modelli selezionavano tra 10 e 1000 geni con regressione logistica.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti candidati all'intervento dell'inserimento dello shunt.</p>
+                    </div>
+
+                </article>
+
+                
+                <h2>4. Deep learning for hydrocephalus prognosis: Advances, challenges, and future directions</h2>
+                
+                <article class="article-card">
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Esplorare l'applicazione del Deep Learning per la diagnostica e l'analisi prognostica dell'idrocefalo.</p>
+                        <h3>Metodologie</h3>
+                        <p>Review della letteratura medica sui sistemi intelligenti basati su dati per decisioni diagnostiche e terapeutiche.</p>
+                    </div>
+                    
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Uso intensivo di set di immagini MRI elaborate per il processamento tramite reti neurali.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Focus sulle Reti Neurali Convoluzionali (CNN) che, a differenza del ML classico, estraggono autonomamente pattern gerarchici (bordi, forme, texture) direttamente dai dati grezzi.</p>
+                        <h3>Outcome</h3>
+                        <p>Essendo una revisione l'outcome è misurato con le performance dei modelli.</p>
+                    </div>  
+
+                    <div class="results-box">    
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Le CNN permettono una diagnosi su immagini MRI con accuratezza del 90%, superando l'analisi umana tradizionale.</p>
+                        <p>Il deep learning rappresenta un progresso formidabile per i trattamenti individualizzati e i risultati prognostici.</p>
+                    </div>
+                
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Immagini ottenute con MRI o TC</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Articoli recenti che applicano il deep learning alla diagnosi dell'idrocefalo.</p>
+                    </div>
+
+                </article>
+
+                <h2>5. SVM-Based Normal Pressure Hydrocephalus Detection</h2>
+                
+                <article class="article-card">
+                    
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Sviluppare un algoritmo per individuare automaticamente i tratti MRI dell'iNPH per facilitare diagnosi pre-sintomatiche o differenziali.</p>
+                        <h3>Metodologie</h3>
+                        <p>Studio retrospettivo su scansioni MRI 3D di 30 pazienti responder e 30 controlli sani.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Segmentazione automatica (SPM12) ed estrazione volumetrica su 272 regioni; validazione incrociata k-fold.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Modello SVM lineare binaria capace di identificare autonomamente volumi o atrofie anatomiche che rappresentano la firma della patologia.</p>
+                        <h3>Outcome</h3>
+                        <p>Diagnosi binaria: iNPH o non-iNPH</p>
+                    </div>
+                    
+                    <div class="results-box">    
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Accuratezza predittiva 0.93 e AUROC di 0.98, con regioni chiave come l'aumento CSF/materia grigia del nucleo caudato e del 4° ventricolo.</p>
+                        <p>La SVM rileva pattern radiologici con un'affidabilità quasi equivalente a quella dei neuroradiologi esperti.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Volumi di materia grigia (GM) e fluido cerebrospinale (CSF) estratti da 272 aree del cervello ottenute da immagini T1W.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti che avevano ricevuto uno shunt CSF per NPH per la prima voltra tra il 2010 e il 2017 aventi scansioni MRI 3D T1W pre-operatorie.</p>
+                    </div>
+
+                </article>
+
+                <h2>6. Systematic volumetric analysis predicts response to CSF drainage and outcome to shunt surgery</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Dimostrare il potere dell'analisi volumetrica automatizzata per distinguere i responder al drenaggio CSF e stimare gli esiti post-shunt.</p>
+                        <h3>Metodologie</h3>
+                        <p>Studio su 104 pazienti per la diagnosi al drenaggio (coorte 1) e 41 per i risultati post-shunt (coorte 2).</p>
+                        <h3>Distribuzioni</h3>
+                        <p>Nella coorte 1 35 responder e 69 non responder.</p>
+                        <p>Nella coorte 2 la variabile di risposta è continua, no classi binarie.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Uso di MRICloud per frammentare l'anatomia fino a 283 volumi; feature selection tramite Eliminazione Ricorsiva (RFE) e bilanciamento delle classi.</p>
+                        <h3>Modelli AI</h3>
+                        <p>SVM combinata a RFE per la diagnosi binaria; modello di regressione LASSO per la prognosi sui punteggi continui.</p>
+                        <h3>Outcome</h3>
+                        <p>Nella coorte 1 i responder sono identificati come coloro che mostrano un miglioramento del 30% al TUG o 5 punti al Tinetti 2 ore dopo il drenaggio.</p>
+                        <p>Nella seconda coorte i responder vengono classificati secondo un test su scale Tinetti e MMSE a seguito dell'intervento di derivazione.</p>
+                    </div>
+                    
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>L'SVM ha raggiunto un'accuratezza diagnostica di 0.90 (AUC 0.94); il LASSO ha ottenuto eccellenti correlazioni predittive (es. r=0.88 per l'indice MMSE).</p>
+                        <p>Queste analisi si affermano come validi sostituti ai test invasivi e ottimi predittori della salute post-shunt.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Volumi di 283 regioni cerebrali estratti da MRI T1W.</p>
+                        <p>Per la seconda coorte si aggiungono i test neurologici pre-shunt.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Per la coorte 1, probabile iNPH con valutazioni del cammino completati prima e dopo il test di drenaggio, MRI entro 1-3 mesi.</p>
+                        <p>Per la coorte 2, pazienti iNPH che avevano completato i test Tinetti/MMSE prima e dopo l'intervento con MRI pre-operazione</p>
+                    </div>
+
+                </article>
+
+
+                <h2>7. The Role of Machine Learning and Radiomics for Treatment Response Prediction</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Concepire un modello predittivo ibrido combinando caratteristiche cliniche e dati di radiomica.</p>
+                        <h3>Metodologie</h3>
+                        <p>Studio pilota su 78 pazienti iNPH valutati pre e post shunt tramite punteggi clinici.</p>
+                        <h3>Distribuzioni</h3>
+                        <p>34 pazienti considerati responder e 33 non responder.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Segmentazione manuale dei ventricoli su MRI T2; estrazione di 120 caratteristiche radiomiche ridotte a 12 tramite algoritmo LASSO e Information Gain Ratio.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Test su vari modelli (reti neurali, KNN, Random Forest, ecc.). L'SVM con kernel sigmoideo ha eccelso sui dati integrati, mentre la Random Forest è risultata migliore sui soli dati clinici.</p>
+                        <h3>Outcome</h3>
+                        <p>Risposta allo shunt valutata con scala clinica iNPHGS calcolata prima e dopo la chirurgia. Riduzione del punteggio di 2 o più punti è considerata risposta positiva.</p>
+                        <p>Il decadimenti cognitivo viene effettuato usando la scala iNPHGS "cognitive impairment".</p>
+                    </div>
+
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>L'uso dei soli dati clinici restituiva un'AUC di 0.71, salita a 0.80 integrando le 12 feature radiomiche nell'SVM.</p>
+                        <p>Il ML combinato offre un incentivo all'uso pratico ospedaliero grazie alla capacità di prevedere gli esiti in modo non invasivo usando semplici immagini T2.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Compromissione cognitiva, distrubo dell'andatura, incontinenza urinaria dalla scala iNPHGS sommate a 12 features di radiomica.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti diagnosticati con iNPH sottoposti ad inserimento shunt  con follow-up clinico disponibile. Esclusi pazienti con patologie del sistema nervoso centrale o follow-up incompleto.</p>
+                    </div>
+
+                </article>
+
+                <h2>8. Use of cortical volume to predict response to temporary CSF drainage</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Scoprire se l'atrofia del volume della materia grigia (GMV) corticale possa distinguere i responder dai non-responder al drenaggio temporaneo tramite un algoritmo AI.</p>
+                        <h3>Metodologie</h3>
+                        <p>Studio su 132 pazienti esaminati tramite MoCA e test motori.</p>
+                        <h3>Distribuzioni</h3>
+                        <p>87 responder e 45 non-responder al drenaggio temporaneo.</p>
+                        <p>Nel follow-up a 3 mesi l'80% dei pazienti ha mostrato miglioramenti clinici. Su 41, 33 sono migliorati, mentre 8 non hanno mostrato cambiamenti significativi.</p>
+                        <p>Nel follow-up a 1 anno il 75% dei pazienti valutati ha mantenuto un miglioramento clinico. 18 sono ancora migliorati, mentre 6 sono rimasti stabili. Per 22 il dato non è disponibile.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Misurazione volumi tramite VBM, armonizzazione dei dati con ComBat per rimuovere i batch-effect e validazione LOOCV.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Uso di SVM con kernel RBF, capace di discriminare dati linearmente inseparabili (interazioni tra angolazioni, età e volumi di materia grigia).</p>
+                        <h3>Outcome</h3>
+                        <p>Incremento di almeno il 20% della velocità di deambulazione o punteggi cognitivi MoCA.</p>
+                    </div>
+                    
+                    
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>La mancata risposta era associata a carenza di GMV nella corteccia parietale posteriore destra e nell'area motoria supplementare (SMA).</p>
+                        <p>La complessa SVM ha raggiunto un'accuratezza del 75.8% (superando il 62.9% della diagnostica convenzionale), dimostrando enormi benefici predittivi nell'individuare deficit di riserva funzionale.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Volumi di materia grigia corticale (GMV) estratti da corteccia parietale posteriore destra e area motoria supplementare.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti con sospetto iNPH, Evan's Index >= 0.3, valutati tramite drenaggio temporaneo del CSF aventi MRI per la segmentazione volumetrica.</p>
+                    </div>
+
+                </article>
+
+                
+                <h2>9. Prediction of Shunt Responsiveness Using the Lumbar Infusion Test: A Machine Learning Approach</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Creare un modello matematico per certificare l'idoneità allo shunt usando solo l'analisi di segnali di pressione ed elettrici (ICP ed ECG) dal test di infusione lombare (LIT).</p>
+                        <h3>Metodologie</h3>
+                        <p>Indagine su 96 pazienti validata tramite drenaggio lungo (ELD).</p>
+                        <h3>Distribuzioni</h3>
+                        <p>46 pazienti sono stati classificati come ELD positivi e 50 come ELD negativi.</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Estrazione di 48 firme caratteristiche dai segnali temporali (inclusi RQA e spettro armonico CWT); validazione leave-one-out.</p>
+                        <h3>Modelli AI</h3>
+                        <p>Successo dell'algoritmo XGBoost, un modello ensemble ad alberi decisionali capacissimo di individuare dipendenze di segnale insospettabili.</p>
+                        <h3>Outcome</h3>
+                        <p>Risposta all'External Lumbar Drainage (ELD) dalla durata di 5 giorni. I pazienti venivano divisi in due grupi: Intervento consigliato e non.</p>
+                        <p>A coloro a cui è stato consigliato l'intervento si valutava il miglioramento a 3 e 12 mesi.</p>
+                    </div>
+                    
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>48 firme acustico-sensoriali estratte dai segnali di pressione intracranica (ICP) e dai segnali elettrocardiografici (ECG) durante il test di infusione lombare.</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti con sospetto iNPH, con EI > 0.3 e pressione CSF nella norma in paertura. Esclusi i pazienti con patologie neurodegenerative.</p>
+                    </div>
+                    <div class="results-box">
+                        <h3>Risultati & Conclusioni</h3>
+                        <p>Utilizzando solo 8 firme acustico-sensoriali, XGBoost ha ottenuto un'AUC di 0.891 e un'accuratezza dell'82.3%, contro il 62.5% del metodo di routine.</p>
+                        <p>Il ML avanzato eleva i puri segnali d'onda a formidabili predittori chirurgici, ottimizzando l'utilità del test infusionale.</p>
+                    </div>
+                </article>
+
+
+
+
+
+
+
+
+
+
+                <h2>10. Unsupervised machine learning identifies clinically relevant patterns of CSF dynamic dysfunction in normal pressure hydrocephalus</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Determinare se pattern data-driven della distribuzione del liquido cerebrospinale (CSF) possano prevedere con accuratezza la diagnosi di iNPH e la probabilità di risposta al trattamento chirurgico (shunt)</p>
+                        <h3>Metodologie</h3>
+                        <p>È stato condotto uno studio retrospettivo caso-controllo appaiato (98 iNPH e 98 control). Gli autori hanno applicato una tecnica di Machine Learning non supervisionata sulle probabilità del CSF estratte da segmentazioni MRI, usando un set di addestramento (80% dei partecipanti) e uno di test (20%)</p>
+                        <h3>Distribuzioni</h3>
+                        <p>Al follow-up post-shunt a un anno, nel gruppo di addestramento, si sono registrati i seguenti risultati: per il deficit cognitivo 27 pazienti sono migliorati e 32 no; per i problemi di andatura (gait) 46 hanno avuto un miglioramento e 22 no; per i sintomi urinari 23 sono migliorati e 23 no. Nel set di test, i miglioramenti sono stati rilevati in 5 casi su 13 per l'aspetto cognitivo, 13 su 17 per l'andatura e 5 su 12 per i sintomi urinari</p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Le scansioni MRI (sequenze volumetriche T1 MPRAGE) sono state normalizzate tramite Advanced Normalization Tools e SPM12 su un template (MCALT). Il cervello è stato segmentato per estrarre le mappe di probabilità del CSF, che sono state successivamente sottoposte a lisciamento spaziale (smoothing a 4-mm FWHM)</p>
+                        <h3>Modelli AI</h3>
+                        <p>È stata impiegata la fattorizzazione a matrici non negative (Non-negative Matrix Factorization - NMF) con l'algoritmo "Minimum-volume rank-deficient" per l'apprendimento non supervisionato dei pattern. Per la fase di classificazione vera e propria, le componenti NMF sono state utilizzate come input in modelli di regressione penalizzata (Elastic Net)</p>
+                        <h3>Outcome</h3>
+                        <p>L'outcome era sia di tipo diagnostico (capacità di distinguere i pazienti iNPH dai controlli sani) sia di tipo prognostico (presenza o assenza di miglioramento nei tre sintomi cardinali: cognitivo, urinario e andatura, valutato a 1 anno dall'operazione)</p>
+                    </div>
+                    
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Mappe probabilistiche dei voxel del CSF ricavate da sequenze MRI T1-pesate; nello specifico, il modello finale si basava sui "pesi" (loads) dei 7 pattern NMF identificati</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p>Pazienti (età > 50 anni) con diagnosi clinica di iNPH, miglioramento video-registrato dell'andatura dopo il tap test, impianto di shunt ventricoloperitoneale effettuato, ed esame MRI T1 ad alta risoluzione disponibile. I NPH secondari erano esclusi. Sono stati inclusi come controllo individui cognitivamente sani prelevati da uno studio di popolazione</p>
+                    </div>
+                    <div class="results-box">
+                        <h3>Risultati</h3>
+                        <p>Il modello NMF ha individuato 7 pattern prevalenti del CSF, garantendo un'accuratezza superba nel diagnosticare l'iNPH (96% nel set di training, 97% nel test) associandosi fortemente con l'anatomia tipica dell'iNPH (DESH). Nelle previsioni dell'outcome post-operatorio le prestazioni sono state invece deludenti: accuratezza del 63% per il miglioramento urinario, e misurazioni equivalenti alla casualità statistica per i domini dell'andatura e cognitivi.</p>
+                    </div>
+                </article>
+
+
+
+
+                <h2>11. MRI-Based Prediction of Clinical Improvement after Ventricular Shunt Placement for Normal Pressure Hydrocephalus: Development and Evaluation of an Integrated Multisequence Machine Learning Algorithm</h2>
+                
+                <article class="article-card">
+
+                    <div class="tech-block">
+                        <h3>Obiettivo</h3>
+                        <p>Sviluppare e valutare un algoritmo di Intelligenza Artificiale addestrato su più sequenze MRI per prevedere in modo mirato il miglioramento post-operatorio dei singoli sintomi nei pazienti affetti da NPH</p>
+                        <h3>Metodologie</h3>
+                        <p>Studio retrospettivo basato su dati clinici provenienti da un singolo centro ospedaliero di 249 (dal 2014 al 2021) divisi in set di training e testing (rapporto 7:3). I pazienti avevano NPH idiopatico (85% - 212) o secondario (15% - 37). I modelli creati sono stati inoltre messi alla prova in una validazione esterna su dati completamente indipendenti (33 pazienti da un altro istituto)</p>
+                        <h3>Distribuzioni</h3>
+                        <p> Dei 175 pazienti della coorte primaria valutati al follow-up di 12 mesi, l'andatura è migliorata in 123 e rimasta inalterata in 52; i sintomi urinari sono migliorati in 66 casi su 97 pazienti sintomatici; a livello cognitivo sono migliorati 75 pazienti su 160 sintomatici; lo score globale mRS è migliorato in 84 pazienti su 149<p>
+                    </div>
+
+                    <div class="tech-block">
+                        <h3>Elaborazione dei Dati</h3>
+                        <p>Le scansioni MRI sono state elaborate tramite l'algoritmo OncoAI. Il processo ha incluso: coregistrazione di diverse sequenze a un template standard, estrazione del cervello (rimozione del cranio o skull-stripping), segmentazione dei tessuti cerebrali. Infine, le immagini sono state ridimensionate (256x256x64 pixel) ed è stata applicata una normalizzazione delle intensità in scala</p>
+                        <p>Class balance resampling per rendere piuù omogenee le classi improved e non improved; Gait 123 improved - 52 not iproved, Urinary 66 - 31, mRS 84 - 65, Cogni 75 - 85.</p>
+                        <h3>Modelli AI</h3>
+                        <p>È stata utilizzata una complessa architettura a Reti Neurali Profonde Residuali 3D (modello ResNet-50). Mentre modelli singoli analizzavano la singola sequenza, l'algoritmo principale unificava i dati estraendo 2048 caratteristiche da T2 e 2048 da FLAIR; questi dati venivano poi fusi ("fused") passandoli attraverso strati lineari integrati e regolarizzati (Batch Norm e ReLU)</p>
+                        <h3>Outcome</h3>
+                        <p>Miglioramento (binarizzato in "migliorato" vs "non migliorato", valutato con una diminuzione del punteggio di gravità di almeno 1 punto) per la scala di mRS, andatura, incontinenza e cognitività, registrato idealmente a 12 mesi (o 3 in mancanza di dati) dall'intervento</p>
+                    </div>
+                    
+                    <div class="tech-block">
+                        <h3>Input Features</h3>
+                        <p>Miglioramento (binarizzato in "migliorato" vs "non migliorato", valutato con una diminuzione del punteggio di gravità di almeno 1 punto) per la scala di mRS, andatura, incontinenza e cognitività, registrato idealmente a 12 mesi (o 3 in mancanza di dati) dall'intervento</p>
+                        <h3>Inclusion Criteria</h3>
+                        <p> Pazienti consecutivi diagnosticati con NPH (includendo non solo l'idiopatico, ma anche il 14.9% di NPH secondario) e sottoposti a chirurgia derivativa, per i quali fossero disponibili immagini pre-operatorie con sequenze T2 o FLAIR</p>
+                    </div>
+                    <div class="results-box">
+                        <h3>Risultati</h3>
+                        <p>Il modello fuso (T2 + FLAIR) ha superato gli altri, prevedendo in modo accurato l'evoluzione clinica: un eccezionale AUROC di 0.88 per l'andatura, e un 0.74 per il punteggio globale mRS. Riguardo ai miglioramenti urinari e cognitivi, l'integrazione di T2 a FLAIR non ha offerto grandi balzi di performance rispetto all'uso del solo FLAIR, restituendo AUROC di 0.79 (urinario) e 0.72 (cognitivo)<p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+    </div>
+    <section class="conclusion">
+        <h2>Conclusione</h2>
+        <p>La revisione della letteratura evidenzia come l'applicazione dell'Intelligenza Artificiale, dal Machine Learning classico (come la SVM) fino al Deep Learning (CNN) e ai modelli ensemble (XGBoost), stia trasformando l'approccio diagnostico e prognostico all'Idrocefalo Normoteso Idiopatico. Analizzando dati eterogenei che spaziano dalle neuroimmagini e volumi corticali, ai biomarcatori del CSF, fino ai complessi segnali infusionali, l'IA raggiunge sistematicamente tassi di accuratezza e capacità predittive superiori rispetto alle metodologie diagnostiche umane tradizionali. L'integrazione di questi modelli offre la reale prospettiva di percorsi clinici non invasivi e di cure chirurgiche strettamente personalizzate.</p>
+    </section>
+    
+</body>
+    <script>
+                (function(){
+                    const track = document.getElementById('carousel-track');
+                    const prev = document.getElementById('carousel-prev');
+                    const next = document.getElementById('carousel-next');
+
+                    function scrollByCard(direction = 1) {
+                        const card = track.querySelector('.carousel-card');
+                        if (!card) return;
+                        const gap = parseFloat(getComputedStyle(track).gap) || 16;
+                        const step = card.getBoundingClientRect().width + gap;
+                        track.scrollBy({ left: step * direction, behavior: 'smooth' });
+                    }
+
+                    prev.addEventListener('click', () => scrollByCard(-1));
+                    next.addEventListener('click', () => scrollByCard(1));
+
+                    // keyboard support when focus is inside carousel
+                    track.addEventListener('keydown', (e) => {
+                        if (e.key === 'ArrowLeft') scrollByCard(-1);
+                        if (e.key === 'ArrowRight') scrollByCard(1);
+                    });
+
+                    // allow arrow navigation by focusing the track
+                    track.tabIndex = 0;
+                })();
+    </script>
+</html>
