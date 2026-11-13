@@ -41,7 +41,7 @@ scene.add(dirLight);
 
 // Clickable objects setup
 let clickable = [];
-const clickable_names = ['arcade','lock','airplane','hat','github','linkedin','horses','scroll'];
+const clickable_names = ['arcade','lock','airplane','hat','github','linkedin','horses','scroll', 'Pandas.svg', 'scikit-learn.svg', 'NumPy.svg', 'pytorch-ar21.svg'];
 const links = new Map([
     ['arcade','https://github.com/Ago19pc/IS24-AM04'],
     ['lock','https://github.com/Ago19pc/keccak'],
@@ -50,7 +50,11 @@ const links = new Map([
     ['github',"https://github.com/Ago19pc"],
     ['linkedin',"https://www.linkedin.com/in/agostino-contemi-b0b211293/"],
     ['horses','https://github.com/fillododi/chess'],
-    ['scroll',"docs/CV Contemi Agostino.pdf"]
+    ['scroll',"docs/CV Contemi Agostino.pdf"],
+    ['Pandas.svg','https://pandas.pydata.org/'],
+    ['scikit-learn.svg','https://scikit-learn.org/'],
+    ['NumPy.svg','https://numpy.org/'],
+    ['pytorch-ar21.svg','https://pytorch.org/']
 ]);
 
 // Descriptions
@@ -61,7 +65,11 @@ const descriptions = new Map([
     ['github','Link to my GitHub profile.'],
     ['linkedin','Link to my LinkedIn profile.'],
     ['horses','A chess game project! ♟️'],
-    ['scroll','My CV as a PDF.']
+    ['scroll','My CV as a PDF.'],
+    ['Pandas.svg','Pandas, Python data analysis library! 🐼'],
+    ['scikit-learn.svg','scikit-learn, Machine Learning in Python! 🤖'],
+    ['NumPy.svg','NumPy, scientific computing with Python! 🔢'],
+    ['pytorch-ar21.svg','PyTorch, Deep Learning framework! 🔥']
 ]);
 
 // Tooltip
@@ -79,12 +87,70 @@ tooltip.style.textAlign = 'center';
 tooltip.style.zIndex = '10';
 document.body.appendChild(tooltip);
 
+// Shelf icons
+const shelfIcons = [
+  { name: 'Pandas.svg', file: '/assets/Pandas.svg', width: 0.32, height: 0.32 },
+  { name: 'scikit-learn.svg', file: '/assets/scikit-learn.svg', width: 0.32, height: 0.32 },
+  { name: 'NumPy.svg', file: '/assets/NumPy.svg', width: 0.32, height: 0.32 },
+  { name: 'pytorch-ar21.svg', file: '/assets/pytorch-ar21.svg', width: 0.44, height: 0.22 }
+];
+
+function createSvgPlane(file, width, height) {
+  const canvas = document.createElement('canvas');
+  const resolution = 512;
+  canvas.width = resolution;
+  canvas.height = Math.round(resolution * (height / width));
+  const ctx = canvas.getContext('2d');
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    texture.needsUpdate = true;
+  };
+  img.src = file;
+
+  const geometry = new THREE.PlaneGeometry(width, height);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    transparent: true,
+    alphaTest: 0.05,
+    side: THREE.DoubleSide
+  });
+
+  return new THREE.Mesh(geometry, material);
+}
+
 // Load GLTF
 const loader = new GLTFLoader();
 const loadingScreen = document.getElementById('loading-screen');
 loader.load(
   '/models/room.glb',
   (gltf) => {
+    // Populate shelf icons
+    shelfIcons.forEach(icon => {
+      const sanitized = THREE.PropertyBinding.sanitizeNodeName(icon.name);
+      let node = gltf.scene.getObjectByName(sanitized) || gltf.scene.getObjectByName(icon.name);
+      if (!node) {
+        gltf.scene.traverse(child => {
+          if (!node && (child.userData?.name === icon.name || child.name === sanitized || child.name === icon.name)) {
+            node = child;
+          }
+        });
+      }
+      if (node) {
+        node.name = icon.name;
+        const mesh = createSvgPlane(icon.file, icon.width, icon.height);
+        node.add(mesh);
+      } else {
+        console.warn(`Shelf icon node "${icon.name}" not found`);
+      }
+    });
+
     clickable_names.forEach(name => {
       const obj = gltf.scene.getObjectByName(name);
       if(obj) clickable.push(obj);
@@ -97,8 +163,10 @@ loader.load(
   },
   (xhr) => {
     // Optional: progress
-    const percentComplete = (xhr.loaded / xhr.total) * 100;
-    loadingScreen.innerText = `Loading... ${Math.round(percentComplete)}%`;
+    if (xhr.lengthComputable && xhr.total > 0) {
+      const percentComplete = Math.min(100, Math.round((xhr.loaded / xhr.total) * 100));
+      loadingScreen.innerText = `Loading... ${percentComplete}%`;
+    }
   },
   (error) => console.error(error)
 );
